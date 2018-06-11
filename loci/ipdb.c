@@ -63,9 +63,59 @@ bool ipdb_dump(const ipdb *db, const char *file)
             fprintf(fp, "%-16s%-16s%s%s%s\r\n", ip1_t, ip2_t, item.zone, item.area[0]?" ":"", item.area);
         }
 
-        //fprintf(fp, "\r\n\r\nIPÊı¾İ¿â¹²ÓĞÊı¾İ £º %d Ìõ\r\n", db->count); /* ÎªÁËºÍ´¿Õæ½âÑ¹Ò»ÖÂ£¬ĞèÒª±¾ÎÄ¼ş±àÂëÎªGB2312 */
+        //fprintf(fp, "\r\n\r\nIPæ•°æ®åº“å…±æœ‰æ•°æ® ï¼š %d æ¡\r\n", db->count); /* ä¸ºäº†å’Œçº¯çœŸè§£å‹ä¸€è‡´ï¼Œéœ€è¦æœ¬æ–‡ä»¶ç¼–ç ä¸ºGB2312 */
         fclose(fp);
         return true;
     }
     return false;
+}
+
+
+static uint8_t* readfile(const char *path, uint32_t *length)
+{
+	uint8_t* buffer = 0;
+	FILE *fp = nullptr;
+	fopen_s(&fp, path, "rb");
+	if (fp)
+	{
+		fseek(fp, 0, SEEK_END);
+		*length = ftell(fp);
+		buffer = (uint8_t*)malloc(*length);
+
+		fseek(fp, 0, SEEK_SET);
+		fread(buffer, *length, 1, fp);
+		fclose(fp);
+	}
+	return buffer;
+}
+
+char* ipdb_read(int db_type, const char *db_path, const char *ip_addr)
+{
+	ipdb_handle *handle = 0;
+	switch (db_type)
+	{
+	case 0:
+		handle = (ipdb_handle*)&qqwry_handle;
+		break;
+	case 1:
+		handle = (ipdb_handle*)&mon17_handle;
+		break;
+	case 2:
+		handle = (ipdb_handle*)&txtdb_handle;
+		break;
+	default:
+		handle = (ipdb_handle*)&qqwry_handle;
+		break;
+	}
+	uint32_t length = 0;
+	uint8_t *buffer = readfile(db_path, &length);
+	ipdb *db = ipdb_create(handle, buffer, length, NULL);
+	if (db == NULL) return _strdup("ipdb_create_error");
+	ipdb_item item;
+	if (ipdb_find(db, &item, ip_addr) == false) return _strdup("ipdb_find_error");
+	char loca[256];
+	sprintf(loca, "%s %s", item.zone, item.area);
+	ipdb_release(db);
+	if (buffer) free(buffer);
+	return _strdup(loca);
 }
