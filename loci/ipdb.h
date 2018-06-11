@@ -79,6 +79,10 @@ bool ipdb_next(ipdb_iter *iter, ipdb_item *item);
 /* 导出全部内容 */
 bool ipdb_dump(const ipdb *db, const char *file);
 
+extern const ipdb_handle qqwry_handle;
+extern const ipdb_handle mon17_handle;
+extern const ipdb_handle txtdb_handle;
+	
 #ifdef __cplusplus
 }
 #endif
