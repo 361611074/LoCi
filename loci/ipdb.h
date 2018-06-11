@@ -1,4 +1,4 @@
-﻿#ifndef __LPDB_H_
+#ifndef __LPDB_H_
 #define __LPDB_H_
 
 #ifdef __cplusplus
@@ -79,10 +79,12 @@ bool ipdb_next(ipdb_iter *iter, ipdb_item *item);
 /* 导出全部内容 */
 bool ipdb_dump(const ipdb *db, const char *file);
 
+char* ipdb_read(int db_type, const char *db_path, const char *ip_addr);
+
 extern const ipdb_handle qqwry_handle;
 extern const ipdb_handle mon17_handle;
 extern const ipdb_handle txtdb_handle;
-	
+
 #ifdef __cplusplus
 }
 #endif
