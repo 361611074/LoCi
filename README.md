@@ -1,4 +1,6 @@
-# LoCi SDK v1.3
+# LoCi SDK v1.3 Mod
+
+- `NtrQQ`的IP`IP归属地数据库`解析引擎采用了shuax的`LoCi SDK v1.3`，修改了一小部分代码
 
 ## 基本说明：
 - `LoCi`，即`LocateIP`的简写，是一个用于解析`IP归属地数据库`的引擎。通过纯C代码写成，一切为了追求效率，非常适合集成到您的程序中。
